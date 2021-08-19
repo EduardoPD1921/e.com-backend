@@ -6,6 +6,8 @@ const debug = require('debug')('nodestr:server');
 const port = normalizePort(process.env.PORT || '8000');
 app.set('port', port);
 
+const server = http.createServer(app);
+
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
