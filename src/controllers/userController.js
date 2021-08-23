@@ -3,7 +3,22 @@ const User = mongoose.model('User');
 const hashService = require('../services/hashService');
 
 exports.store = async (req, res, next) => {
+  const errors = [];
+
   try {
+    if (req.body.password.length < 8) {
+      errors.push({ code: 1000, message: 'Senha muito curta' });
+    };
+
+    const emailAlreadyInUse = await User.exists({ email: req.body.email });
+    if (emailAlreadyInUse) {
+      errors.push({ code: 2000, message: 'E-mail já cadastrado' });
+    };
+
+    if (errors.length > 0) {
+      return res.status(400).send(errors);
+    };
+
     const hashedPassword = await hashService.createHash(req.body.password);
 
     await User.create({
