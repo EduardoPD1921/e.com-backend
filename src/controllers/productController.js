@@ -5,21 +5,26 @@ const FormData = require('form-data');
 const config = require('../config');
 
 exports.store = async (req, res, next) => {
+  console.log(req.body.text);
+  const encode_img = req.file.buffer.toString("base64");
+
   var data = new FormData();
-  data.append('image', req.body.image);
+  data.append('image', encode_img);
 
   var requestConfig = {
     method: 'post',
     url: 'https://api.imgur.com/3/image',
     headers: {
-      'Authorization': `Client-ID ${config.imgurClientID}`
+      'Authorization': `Client-ID ${config.imgurClientID}`,
+      ...data.getHeaders()
     },
+    data: data
   };
 
   try {
-    var reqResp = await axios(data, requestConfig);
-    res.send(reqResp);
+    var requestResp = await axios(requestConfig);
+    console.log(requestResp);
   } catch(error) {
-    res.status(400).send(error);
-  }
+    console.log(error);
+  };
 };
