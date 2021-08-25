@@ -14,13 +14,16 @@ mongoose.connect(config.connectionString, {
 });
 
 const User = require('./models/user');
+const Product = require('./models/product');
 
 const userRoutes = require('./routes/userRoutes');
+const productRoutes = require('./routes/productRoutes');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors({ origin: '*' }));
 
 app.use('/user', userRoutes);
+app.use('/product', productRoutes);
 
 module.exports = app;
