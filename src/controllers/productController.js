@@ -11,7 +11,7 @@ exports.store = async (req, res, next) => {
       title: req.body.title,
       description: req.body.description,
       price: req.body.price,
-      tags: req.body.tags,
+      tags: req.body.tags.split(','),
       image: imageLink
     });
 

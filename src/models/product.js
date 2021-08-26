@@ -15,6 +15,8 @@ const productSchema = new mongoose.Schema({
   },
   tags: [{
     type: String,
+    trim: true,
+    lowercase: true,
     required: [true, 'O produto precisa de uma tag']
   }],
   image: {
