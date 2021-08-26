@@ -1,30 +1,22 @@
 const mongoose = require('mongoose');
 const Product = mongoose.model('Product');
-const axios = require('axios');
-const FormData = require('form-data');
-const config = require('../config');
+const imageUploadService = require('../services/imageUploadService');
 
 exports.store = async (req, res, next) => {
-  console.log(req.body.text);
-  const encode_img = req.file.buffer.toString("base64");
-
-  var data = new FormData();
-  data.append('image', encode_img);
-
-  var requestConfig = {
-    method: 'post',
-    url: 'https://api.imgur.com/3/image',
-    headers: {
-      'Authorization': `Client-ID ${config.imgurClientID}`,
-      ...data.getHeaders()
-    },
-    data: data
-  };
+  // Image uploader considering that imgur api it's never gonna failed
+  const imageLink = await imageUploadService.uploadImage(req.file.buffer);
 
   try {
-    var requestResp = await axios(requestConfig);
-    console.log(requestResp);
+    await Product.create({
+      title: req.body.title,
+      description: req.body.description,
+      price: req.body.price,
+      tags: req.body.tags,
+      image: imageLink
+    });
+
+    res.status(200).send({ code: 'product-registered' });
   } catch(error) {
-    console.log(error);
+    res.status(400).send(error);
   };
 };
