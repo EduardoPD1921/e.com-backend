@@ -20,3 +20,12 @@ exports.store = async (req, res, next) => {
     res.status(400).send(error);
   };
 };
+
+exports.show = async (req, res, next) => {
+  try {
+    const products = await Product.find({});
+    res.status(200).send(products);
+  } catch(error) {
+    res.status(500).send(error);
+  };
+};

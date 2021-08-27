@@ -36,9 +36,9 @@ exports.store = async (req, res, next) => {
 
 exports.show = async (req, res, next) => {
   try {
-    const users = await User.find({}, 'name email birthDate');
+    const users = await User.find({}, '_id name email birthDate');
     res.status(200).send(users);
   } catch(error) {
-    res.status(400).send(error);
+    res.status(500).send(error);
   };
 };
