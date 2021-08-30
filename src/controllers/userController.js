@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const hashService = require('../services/hashService');
+const authService = require('../services/authService');
 
 exports.store = async (req, res, next) => {
   const errors = [];
@@ -38,6 +39,22 @@ exports.show = async (req, res, next) => {
   try {
     const users = await User.find({}, '_id name email birthDate');
     res.status(200).send(users);
+  } catch(error) {
+    res.status(500).send(error);
+  };
+};
+
+exports.login = async (req, res, next) => {
+  try {
+    const userExists = await User.exists({ email: req.body.email });
+    if (userExists === false) {
+      return res.status(400).send({ code: 'wrong-email' });
+    };
+
+    const authUser = await User.find({ email: req.body.email });
+    const correctCredential = await hashService.compareHash(req.body.password, authUser.password);
+
+    res.status(200).send(correctCredential);
   } catch(error) {
     res.status(500).send(error);
   };
