@@ -42,3 +42,14 @@ exports.show = async (req, res, next) => {
     res.status(500).send(error);
   };
 };
+
+exports.delete = async (req, res, next) => {
+  const id = req.params.id;
+
+  try {
+    await User.findOneAndDelete({ _id: id });
+    res.status(200).send({ code: 'user-deleted' });
+  } catch(error) {
+    res.status(500).send(error);
+  }
+};
