@@ -51,10 +51,21 @@ exports.login = async (req, res, next) => {
       return res.status(400).send({ code: 'wrong-email' });
     };
 
-    const authUser = await User.find({ email: req.body.email });
+    const authUser = await User.findOne({ email: req.body.email });
     const correctCredential = await hashService.compareHash(req.body.password, authUser.password);
 
-    res.status(200).send(correctCredential);
+    if (correctCredential === false) {
+      return res.send(400).send({ code: 'wrong-password' });
+    };
+
+    const data = {
+      id: authUser._id,
+      email: authUser.email,
+      admin: false
+    };
+
+    const authToken = await authService.generateToken(data);
+    res.status(200).send({ code: 'user-authenticated', token: authToken });
   } catch(error) {
     res.status(500).send(error);
   };
