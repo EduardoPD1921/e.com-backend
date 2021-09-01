@@ -21,7 +21,31 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, 'O usuário precisa de uma senha']
-  }
+  },
+  cart: [{
+    productId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Product',
+      required: true
+    },
+    title: {
+      type: String,
+      required: true
+    },
+    price: {
+      type: Number,
+      required: true
+    },
+    image: {
+      type: String,
+      required: true
+    }
+  }],
+  likedProducts: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Product',
+    required: true
+  }]
 });
 
 module.exports = mongoose.model('User', userSchema);
