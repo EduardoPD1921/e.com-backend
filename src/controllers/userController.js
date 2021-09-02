@@ -8,12 +8,12 @@ exports.store = async (req, res, next) => {
 
   try {
     if (req.body.password.length < 8) {
-      errors.push({ code: 1000, message: 'Senha muito curta' });
+      errors.push({ code: 'short-password', message: 'Senha muito curta' });
     };
 
     const emailAlreadyInUse = await User.exists({ email: req.body.email });
     if (emailAlreadyInUse) {
-      errors.push({ code: 2000, message: 'E-mail já cadastrado' });
+      errors.push({ code: 'email-already-in-use', message: 'E-mail já cadastrado' });
     };
 
     if (errors.length > 0) {
@@ -48,14 +48,14 @@ exports.login = async (req, res, next) => {
   try {
     const userExists = await User.exists({ email: req.body.email });
     if (userExists === false) {
-      return res.status(400).send({ code: 'wrong-email' });
+      return res.status(400).send({ code: 'wrong-email', message: 'E-mail não cadastrado' });
     };
 
     const authUser = await User.findOne({ email: req.body.email });
     const correctCredential = await hashService.compareHash(req.body.password, authUser.password);
 
     if (correctCredential === false) {
-      return res.send(400).send({ code: 'wrong-password' });
+      return res.status(400).send({ code: 'wrong-password', message: 'Senha incorreta' });
     };
 
     const data = {
