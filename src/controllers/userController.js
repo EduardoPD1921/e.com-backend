@@ -95,9 +95,22 @@ exports.unlikeProduct = async (req, res, next) => {
       $pull: { likedProducts: req.body.productId }
     }, { returnOriginal: false });
 
-    console.log(user);
+    res.status(200).send({ code: 'product-unliked' });
   } catch(error) {
-    console.log(error);
+    res.status(500).send(error);
+  };
+};
+
+exports.getLikedProducts = async (req, res, next) => {
+  const rawToken = req.headers['authorization'];
+  const decodedToken = authService.decodeToken(rawToken);
+
+  try {
+    const userLikedProducts = await User.findById(decodedToken.id, 'likedProducts');
+    
+    res.status(200).send(userLikedProducts);
+  } catch(error) {
+    res.status(500).send(error);
   };
 };
 
