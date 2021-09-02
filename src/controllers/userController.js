@@ -71,6 +71,36 @@ exports.login = async (req, res, next) => {
   };
 };
 
+exports.likeProduct = async (req, res, next) => {
+  const rawToken = req.headers['authorization'];
+  const decodedToken = authService.decodeToken(rawToken);
+
+  try {
+    const user = await User.findByIdAndUpdate(decodedToken.id, {
+      $addToSet: { likedProducts: [req.body.productId] }
+    }, { returnOriginal: false });
+
+    res.status(200).send({ code: 'product-liked' });
+  } catch(error) {
+    res.status(500).send(error);
+  };
+};
+
+exports.unlikeProduct = async (req, res, next) => {
+  const rawToken = req.headers['authorization'];
+  const decodedToken = authService.decodeToken(rawToken);
+
+  try {
+    const user = await User.findByIdAndUpdate(decodedToken.id, {
+      $pull: { likedProducts: req.body.productId }
+    }, { returnOriginal: false });
+
+    console.log(user);
+  } catch(error) {
+    console.log(error);
+  };
+};
+
 exports.delete = async (req, res, next) => {
   const id = req.params.id;
 
