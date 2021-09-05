@@ -72,8 +72,7 @@ exports.login = async (req, res, next) => {
 };
 
 exports.likeProduct = async (req, res, next) => {
-  const rawToken = req.headers['authorization'];
-  const decodedToken = authService.decodeToken(rawToken);
+  const decodedToken = authService.decodeToken(res.locals.token);
 
   try {
     const user = await User.findByIdAndUpdate(decodedToken.id, {
@@ -87,8 +86,7 @@ exports.likeProduct = async (req, res, next) => {
 };
 
 exports.unlikeProduct = async (req, res, next) => {
-  const rawToken = req.headers['authorization'];
-  const decodedToken = authService.decodeToken(rawToken);
+  const decodedToken = authService.decodeToken(res.locals.token);
 
   try {
     const user = await User.findByIdAndUpdate(decodedToken.id, {
@@ -102,8 +100,7 @@ exports.unlikeProduct = async (req, res, next) => {
 };
 
 exports.getLikedProducts = async (req, res, next) => {
-  const rawToken = req.headers['authorization'];
-  const decodedToken = authService.decodeToken(rawToken);
+  const decodedToken = authService.decodeToken(res.locals.token);
 
   try {
     const userLikedProducts = await User.findById(decodedToken.id, 'likedProducts');
@@ -114,11 +111,32 @@ exports.getLikedProducts = async (req, res, next) => {
   };
 };
 
+exports.addProductToCart = async (req, res, next) => {
+  const decodedToken = authService.decodeToken(res.locals.token);
+
+  try {
+    const user = User.findByIdAndUpdate(decodedToken.id, {
+      $addToSet: {
+        cart: [{
+          productId: req.body.productId,
+          title: req.body.title,
+          price: req.body.price,
+          image: req.body.image
+        }]
+      }
+    }, { returnOriginal: false });
+
+    console.log(user);
+  } catch(error) {
+    res.status(500).send(error);
+  };
+};
+
 exports.delete = async (req, res, next) => {
   const id = req.params.id;
 
   try {
-    await User.findOneAndDelete({ _id: id });
+    await User.findByIdAndDelete(id);
     res.status(200).send({ code: 'user-deleted' });
   } catch(error) {
     res.status(500).send(error);

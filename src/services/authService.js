@@ -19,6 +19,7 @@ exports.authorize = (req, res, next) => {
       if (error) {
         res.status(401).send('invalid-token');
       } else {
+        res.locals.token = token;
         next();
       }
     });
