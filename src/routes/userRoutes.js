@@ -10,6 +10,7 @@ router.put('/likeProduct', authService.authorize, controller.likeProduct);
 router.put('/unlikeProduct', authService.authorize, controller.unlikeProduct);
 router.get('/getLikedProducts', authService.authorize, controller.getLikedProducts);
 router.put('/addProductToCart', authService.authorize, controller.addProductToCart);
+router.get('/getProductCart', authService.authorize, controller.getProductCart);
 router.delete('/delete/:id', controller.delete);
 
 module.exports = router;

@@ -115,10 +115,10 @@ exports.addProductToCart = async (req, res, next) => {
   const decodedToken = authService.decodeToken(res.locals.token);
 
   try {
-    const user = User.findByIdAndUpdate(decodedToken.id, {
+    const user = await User.findByIdAndUpdate(decodedToken.id, {
       $addToSet: {
         cart: [{
-          productId: req.body.productId,
+          _id: req.body.id,
           title: req.body.title,
           price: req.body.price,
           image: req.body.image
@@ -126,7 +126,19 @@ exports.addProductToCart = async (req, res, next) => {
       }
     }, { returnOriginal: false });
 
-    console.log(user);
+    res.status(200).send({ code: 'product-added-to-cart' });
+  } catch(error) {
+    res.status(500).send(error);
+  };
+};
+
+exports.getProductCart = async (req, res, next) => {
+  const decodedToken = authService.decodeToken(res.locals.token);
+
+  try {
+    const userProductCart = await User.findById(decodedToken.id, 'cart');
+
+    res.status(200).send(userProductCart);
   } catch(error) {
     res.status(500).send(error);
   };

@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
     required: [true, 'O usuário precisa de uma senha']
   },
   cart: [{
-    productId: {
+    _id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Product',
       required: true
