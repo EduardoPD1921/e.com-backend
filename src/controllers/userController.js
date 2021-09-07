@@ -132,6 +132,20 @@ exports.addProductToCart = async (req, res, next) => {
   };
 };
 
+exports.removeProductFromCart = async (req, res, next) => {
+  const decodedToken = authService.decodeToken(res.locals.token);
+
+  try {
+    const user = await User.findByIdAndUpdate(decodedToken.id, {
+      $pull: { cart: { _id: req.body._id } }
+    }, { returnOriginal: false });
+
+    res.status(200).send({ code: 'product-removed-from-cart' });
+  } catch(error) {
+    res.status(500).send(error);
+  };
+};
+
 exports.getProductCart = async (req, res, next) => {
   const decodedToken = authService.decodeToken(res.locals.token);
 
