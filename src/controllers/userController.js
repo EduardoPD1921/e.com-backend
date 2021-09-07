@@ -118,7 +118,7 @@ exports.addProductToCart = async (req, res, next) => {
     const user = await User.findByIdAndUpdate(decodedToken.id, {
       $addToSet: {
         cart: [{
-          _id: req.body.id,
+          _id: req.body._id,
           title: req.body.title,
           price: req.body.price,
           image: req.body.image
