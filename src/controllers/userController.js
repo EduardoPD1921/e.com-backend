@@ -121,7 +121,8 @@ exports.addProductToCart = async (req, res, next) => {
           _id: req.body._id,
           title: req.body.title,
           price: req.body.price,
-          image: req.body.image
+          image: req.body.image,
+          tags: req.body.tags
         }]
       }
     }, { returnOriginal: false });

@@ -39,7 +39,13 @@ const userSchema = new mongoose.Schema({
     image: {
       type: String,
       required: true
-    }
+    },
+    tags: [{
+      type: String,
+      trim: true,
+      lowercase: true,
+      required: true
+    }]
   }],
   likedProducts: [{
     type: mongoose.Schema.Types.ObjectId,
