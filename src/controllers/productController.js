@@ -29,3 +29,15 @@ exports.show = async (req, res, next) => {
     res.status(500).send(error);
   };
 };
+
+exports.getLastAdded = async (req, res, next) => {
+  try {
+    const lastProducts = await Product.find({})
+    .sort({ registrationDate: 'desc' })
+    .limit(10);
+
+    res.status(200).send(lastProducts);
+  } catch(error) {
+    res.status(500).send(error);
+  };
+};
