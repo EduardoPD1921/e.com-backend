@@ -25,4 +25,10 @@ const productSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
+productSchema.path('tags').validate(function(val) {
+  if (val.length > 3) {
+    throw new Error('O produto pode ter no máximo 3 tags');
+  };
+});
+
 module.exports = mongoose.model('Product', productSchema);
