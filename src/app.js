@@ -6,7 +6,7 @@ const config = require('./config');
 const app = express();
 const router = express.Router();
 
-mongoose.connect(process.env.DATABASE_URL, {
+mongoose.connect(config.connectionString, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,

@@ -5,7 +5,7 @@
   "author": "Eduardo Gomes Heleno <eduardo.gheleno@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node ./bin/server.js"
+    "start": "nodemon ./bin/server.js"
   },
   "dependencies": {
     "axios": "^0.21.1",
