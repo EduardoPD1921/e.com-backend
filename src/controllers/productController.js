@@ -3,10 +3,9 @@ const Product = mongoose.model('Product');
 const imageUploadService = require('../services/imageUploadService');
 
 exports.store = async (req, res, next) => {
-  // Image uploader considering that imgur api it's never gonna failed
-  const imageLink = await imageUploadService.uploadImage(req.file.buffer);
-
   try {
+    const imageLink = await imageUploadService.uploadImage(req.file.buffer);
+
     await Product.create({
       title: req.body.title,
       description: req.body.description,
@@ -33,7 +32,7 @@ exports.show = async (req, res, next) => {
 exports.getLastAdded = async (req, res, next) => {
   try {
     const lastProducts = await Product.find({})
-    .sort({ registrationDate: 'desc' })
+    .sort({ createdAt: 'desc' })
     .limit(10);
 
     res.status(200).send(lastProducts);
