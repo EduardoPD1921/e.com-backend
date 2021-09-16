@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Product = mongoose.model('Product');
 const imageUploadService = require('../services/imageUploadService');
 
-exports.store = async (req, res, next) => {
+exports.store = async (req, res, _next) => {
   try {
     const imageLink = await imageUploadService.uploadImage(req.file.buffer);
 
@@ -20,7 +20,7 @@ exports.store = async (req, res, next) => {
   };
 };
 
-exports.show = async (req, res, next) => {
+exports.show = async (_req, res, _next) => {
   try {
     const products = await Product.find({});
     res.status(200).send(products);
@@ -29,7 +29,20 @@ exports.show = async (req, res, next) => {
   };
 };
 
-exports.getLastAdded = async (req, res, next) => {
+exports.getProductById = async (req, res, _next) => {
+  const productId = req.params.id;
+
+  try {
+    const product = await Product.findById(productId);
+
+    res.status(200).send(product);
+  } catch(error) {
+    // Temporary res state
+    res.status(500).send(error);
+  };
+};
+
+exports.getLastAdded = async (_req, res, _next) => {
   try {
     const lastProducts = await Product.find({})
     .sort({ createdAt: 'desc' })

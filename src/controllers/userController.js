@@ -3,7 +3,7 @@ const User = mongoose.model('User');
 const hashService = require('../services/hashService');
 const authService = require('../services/authService');
 
-exports.store = async (req, res, next) => {
+exports.store = async (req, res, _next) => {
   const errors = [];
 
   try {
@@ -35,7 +35,7 @@ exports.store = async (req, res, next) => {
   }
 };
 
-exports.show = async (req, res, next) => {
+exports.show = async (_req, res, _next) => {
   try {
     const users = await User.find({}, '_id name email birthDate');
     res.status(200).send(users);
@@ -44,7 +44,7 @@ exports.show = async (req, res, next) => {
   };
 };
 
-exports.login = async (req, res, next) => {
+exports.login = async (req, res, _next) => {
   try {
     const userExists = await User.exists({ email: req.body.email });
     if (userExists === false) {
@@ -71,7 +71,7 @@ exports.login = async (req, res, next) => {
   };
 };
 
-exports.likeProduct = async (req, res, next) => {
+exports.likeProduct = async (req, res, _next) => {
   const decodedToken = authService.decodeToken(res.locals.token);
 
   try {
@@ -85,7 +85,7 @@ exports.likeProduct = async (req, res, next) => {
   };
 };
 
-exports.unlikeProduct = async (req, res, next) => {
+exports.unlikeProduct = async (req, res, _next) => {
   const decodedToken = authService.decodeToken(res.locals.token);
 
   try {
@@ -99,7 +99,7 @@ exports.unlikeProduct = async (req, res, next) => {
   };
 };
 
-exports.getLikedProducts = async (req, res, next) => {
+exports.getLikedProducts = async (_req, res, _next) => {
   const decodedToken = authService.decodeToken(res.locals.token);
 
   try {
@@ -111,7 +111,7 @@ exports.getLikedProducts = async (req, res, next) => {
   };
 };
 
-exports.addProductToCart = async (req, res, next) => {
+exports.addProductToCart = async (req, res, _next) => {
   const decodedToken = authService.decodeToken(res.locals.token);
 
   try {
@@ -133,7 +133,7 @@ exports.addProductToCart = async (req, res, next) => {
   };
 };
 
-exports.removeProductFromCart = async (req, res, next) => {
+exports.removeProductFromCart = async (req, res, _next) => {
   const decodedToken = authService.decodeToken(res.locals.token);
 
   try {
@@ -147,7 +147,7 @@ exports.removeProductFromCart = async (req, res, next) => {
   };
 };
 
-exports.getProductCart = async (req, res, next) => {
+exports.getProductCart = async (_req, res, _next) => {
   const decodedToken = authService.decodeToken(res.locals.token);
 
   try {
@@ -159,7 +159,7 @@ exports.getProductCart = async (req, res, next) => {
   };
 };
 
-exports.delete = async (req, res, next) => {
+exports.delete = async (req, res, _next) => {
   const id = req.params.id;
 
   try {

@@ -6,6 +6,7 @@ const upload = multer();
 
 router.post('/store', upload.single('image'), controller.store);
 router.get('/show', controller.show);
+router.get('/getById/:id', controller.getProductById);
 router.get('/getLastAdded', controller.getLastAdded);
 
 module.exports = router;
