@@ -61,6 +61,7 @@ exports.login = async (req, res, _next) => {
     const data = {
       id: authUser._id,
       email: authUser.email,
+      name: authUser.name,
       admin: false
     };
 

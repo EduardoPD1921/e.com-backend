@@ -24,9 +24,13 @@ const productSchema = new mongoose.Schema({
     required: [true, 'O produto precisa de uma imagem']
   },
   comments: [{
-    userId: {
+    authorId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
+      required: true
+    },
+    authorName: {
+      type: String,
       required: true
     },
     comment: {

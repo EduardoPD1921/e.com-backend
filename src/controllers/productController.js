@@ -62,7 +62,8 @@ exports.addComment = async (req, res, _next) => {
     const product = await Product.findByIdAndUpdate(req.body.productId, {
       $push: {
         comments: [{
-          userId: decodedToken.id,
+          authorId: decodedToken.id,
+          authorName: decodedToken.name,
           comment: req.body.comment,
           stars: req.body.stars
         }]
