@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Product = mongoose.model('Product');
 const imageUploadService = require('../services/imageUploadService');
+const authService = require('../services/authService');
 
 exports.store = async (req, res, _next) => {
   try {
@@ -49,6 +50,26 @@ exports.getLastAdded = async (_req, res, _next) => {
     .limit(10);
 
     res.status(200).send(lastProducts);
+  } catch(error) {
+    res.status(500).send(error);
+  };
+};
+
+exports.addComment = async (req, res, _next) => {
+  const decodedToken = authService.decodeToken(res.locals.token);
+
+  try {
+    const product = await Product.findByIdAndUpdate(req.body.productId, {
+      $push: {
+        comments: [{
+          userId: decodedToken.id,
+          comment: req.body.comment,
+          stars: req.body.stars
+        }]
+      }
+    }, { returnOriginal: false });
+
+    res.status(200).send({ code: 'comment-added' });
   } catch(error) {
     res.status(500).send(error);
   };

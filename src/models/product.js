@@ -22,7 +22,26 @@ const productSchema = new mongoose.Schema({
   image: {
     type: String,
     required: [true, 'O produto precisa de uma imagem']
-  }
+  },
+  comments: [{
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+    },
+    comment: {
+      type: String,
+      required: true
+    },
+    stars: {
+      type: Number,
+      required: true
+    },
+    postDate: {
+      type: Date,
+      default: Date.now
+    }
+  }]
 }, { timestamps: true });
 
 productSchema.path('tags').validate(function(val) {
