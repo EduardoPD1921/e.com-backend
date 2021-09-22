@@ -45,7 +45,12 @@ const userSchema = new mongoose.Schema({
       trim: true,
       lowercase: true,
       required: true
-    }]
+    }],
+    quantity: {
+      type: Number,
+      required: true,
+      default: 1
+    }
   }],
   likedProducts: [{
     type: mongoose.Schema.Types.ObjectId,

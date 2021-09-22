@@ -160,6 +160,24 @@ exports.getProductCart = async (_req, res, _next) => {
   };
 };
 
+exports.addProductQuantity = async (req, res, _next) => {
+  const decodedToken = authService.decodeToken(res.locals.token);
+
+  try {
+    const user = await User.findById(decodedToken.id);
+
+    user.cart.map(product => {
+      if (product._id == req.body.productId) {
+        product.quantity += product.quantity;
+      };
+    });
+
+    user.save();
+  } catch(error) {
+    console.log(error);
+  };
+};
+
 exports.delete = async (req, res, _next) => {
   const id = req.params.id;
 
