@@ -23,6 +23,10 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: [true, 'O produto precisa de uma imagem']
   },
+  stock: {
+    type: Number,
+    required: true
+  },
   comments: [{
     authorId: {
       type: mongoose.Schema.Types.ObjectId,
