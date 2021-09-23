@@ -13,6 +13,7 @@ router.put('/addProductToCart', authService.authorize, controller.addProductToCa
 router.put('/removeProductFromCart', authService.authorize, controller.removeProductFromCart);
 router.get('/getProductCart', authService.authorize, controller.getProductCart);
 router.put('/addProductQuantity', authService.authorize, controller.addProductQuantity);
+router.put('/removeProductQuantity', authService.authorize, controller.removeProductQuantity);
 router.delete('/delete/:id', controller.delete);
 
 module.exports = router;

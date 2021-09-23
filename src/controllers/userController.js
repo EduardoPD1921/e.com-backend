@@ -168,13 +168,33 @@ exports.addProductQuantity = async (req, res, _next) => {
 
     user.cart.map(product => {
       if (product._id == req.body.productId) {
-        product.quantity += product.quantity;
+        product.quantity = product.quantity + 1;
       };
     });
 
     user.save();
+    res.status(200).send({ code: 'quantity-increased' });
   } catch(error) {
-    console.log(error);
+    res.status(500).send(error);
+  };
+};
+
+exports.removeProductQuantity = async (req, res, _next) => {
+  const decodedToken = authService.decodeToken(res.locals.token);
+
+  try {
+    const user = await User.findById(decodedToken.id);
+
+    user.cart.map(product => {
+      if (product._id == req.body.productId) {
+        product.quantity = product.quantity - 1;
+      };
+    });
+
+    user.save();
+    res.status(200).send({ code: 'quantity-decreased' });
+  } catch(error) {
+    res.status(500).send(error);
   };
 };
 
